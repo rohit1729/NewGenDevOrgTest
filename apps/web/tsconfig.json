@@ -22,7 +22,8 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "composite": true
   },
   "include": ["app", "components", "lib", "styles", "next-env.d.ts", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]

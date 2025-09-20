@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run linting across all apps
+pnpm -w lint
+
+# Run type checking across all apps
+pnpm -w type-check
