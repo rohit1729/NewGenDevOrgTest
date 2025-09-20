@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import { AuthController } from '../controllers/auth.controller';
 import { requireAuth } from '../middleware/auth';
-import { validate, schemas } from '../middleware/validation';
 import { authRateLimit } from '../middleware/rateLimit';
+import { schemas, validate } from '../middleware/validation';
 
-const router = Router();
+const router: Router = Router();
 
 router.post('/register', 
   authRateLimit,

@@ -1,12 +1,12 @@
 'use client';
-import useSWRInfinite from 'swr/infinite';
-import { fetcher } from '@/lib/api';
 import NFTCard from '@/components/NFTCard';
-import { useEffect, useMemo, useState } from 'react';
 import Select from '@/components/Select';
 import Toggle from '@/components/Toggle';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { fetcher } from '@/lib/api';
 import { API_URL } from '@/lib/env';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useEffect, useMemo, useState } from 'react';
+import useSWRInfinite from 'swr/infinite';
 
 function useDebounce<T>(value: T, delay = 300) {
   const [v, setV] = useState(value);
@@ -17,7 +17,7 @@ function useDebounce<T>(value: T, delay = 300) {
   return v;
 }
 
-export default function MarketPage() {
+function MarketContent() {
   const sp = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -225,5 +225,13 @@ export default function MarketPage() {
         </button>
       </div>
     </div>
+  );
+}
+
+export default function MarketPage() {
+  return (
+    <Suspense fallback={<div className="glass rounded-2xl p-6 text-center">Loading...</div>}>
+      <MarketContent />
+    </Suspense>
   );
 }

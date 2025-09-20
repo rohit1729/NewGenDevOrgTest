@@ -1,12 +1,22 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { fetchJSON } from '@/lib/api';
 import LiveTicker from '@/components/LiveTicker';
 import NFTCard from '@/components/NFTCard';
+import { fetchJSON } from '@/lib/api';
 import { API_URL } from '@/lib/env';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default async function HomePage() {
-  const stats = await fetchJSON('/market/stats', { next: { revalidate: 10 } });
+  let stats;
+  try {
+    stats = await fetchJSON('/market/stats', { next: { revalidate: 10 } });
+  } catch (error) {
+    // Handle fetch errors during build time when API server isn't running
+    stats = {
+      featured: [],
+      topCollections: [],
+      trendingNfts: []
+    };
+  }
   return (
     <div className='space-y-10'>
       <Hero />

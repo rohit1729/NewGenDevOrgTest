@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import authRoutes from './auth.routes';
-import usersRoutes from './users.routes';
-import nftsRoutes from './nfts.routes';
 import collectionsRoutes from './collections.routes';
-import marketRoutes from './market.routes';
 import imagesRoutes from './images.routes';
+import marketRoutes from './market.routes';
+import nftsRoutes from './nfts.routes';
 import uploadRoutes from './upload.routes';
+import usersRoutes from './users.routes';
 
-const router = Router();
+const router: Router = Router();
 
 router.use('/auth', authRoutes);
 router.use('/users', usersRoutes);

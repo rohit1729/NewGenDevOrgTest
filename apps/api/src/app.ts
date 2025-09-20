@@ -1,18 +1,18 @@
-import express from 'express';
-import cookieParser from 'cookie-parser';
-import morgan from 'morgan';
 import compression from 'compression';
-import logger from 'http-err-notification';
-import path from 'path';
+import cookieParser from 'cookie-parser';
+import express, { Application } from 'express';
 import helmet from 'helmet';
-import routes from './routes';
+import logger from 'http-err-notification';
+import morgan from 'morgan';
+import path from 'path';
+import { collectionListCache, marketStatsCache, nftListCache } from './middleware/cache';
 import { corsMiddleware } from './middleware/cors';
 import { errorHandler, notFound } from './middleware/error';
 import { apiRateLimit } from './middleware/rateLimit';
-import { marketStatsCache, nftListCache, collectionListCache } from './middleware/cache';
 import { requestIdMiddleware } from './middleware/requestId';
+import routes from './routes';
 
-export function createApp() {
+export function createApp(): Application {
   const app = express();
   
   app.use(requestIdMiddleware);

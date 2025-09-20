@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { NftsController } from '../controllers/nfts.controller';
 import { requireAuth } from '../middleware/auth';
 
-const router = Router();
+const router: Router = Router();
 
 router.get('/', (req, res, next) => NftsController.list(req, res).catch(next));
 router.get('/:id', (req, res, next) => NftsController.get(req, res).catch(next));

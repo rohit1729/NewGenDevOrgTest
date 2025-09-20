@@ -1,9 +1,12 @@
-import { Request, Response } from 'express';
+import { Request, RequestHandler, Response } from 'express';
 import { createUploader, fileUrl } from '../services/upload.service';
 
 const uploader = createUploader();
 
-export const UploadController = {
+export const UploadController: {
+  middleware: RequestHandler;
+  upload: (req: Request, res: Response) => Promise<Response | void>;
+} = {
   middleware: uploader.single('image'),
 
   async upload(req: Request, res: Response) {
