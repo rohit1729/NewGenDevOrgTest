@@ -4,6 +4,7 @@ export interface ApiResponse<T = any> {
   error?: string;
   message?: string;
   code?: string;
+  requestId?: string;
 }
 
 export interface PaginatedResponse<T> {

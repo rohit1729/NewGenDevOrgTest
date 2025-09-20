@@ -51,4 +51,15 @@ export class HttpError extends Error {
       status: this.status,
     };
   }
+  
+  toJSONWithRequestId(requestId?: string) {
+    return {
+      success: false,
+      error: this.message,
+      code: this.code,
+      details: this.details,
+      status: this.status,
+      requestId,
+    };
+  }
 }

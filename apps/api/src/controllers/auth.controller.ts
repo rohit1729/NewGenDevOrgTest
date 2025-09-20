@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
-import { AuthService, signJWT } from '../services/auth.service';
 import { config } from '../config';
-import { HttpError } from '../utils/errors';
 import { invalidateUserCache } from '../middleware/cache';
+import { AuthService, signJWT } from '../services/auth.service';
+import { HttpError } from '../utils/errors';
+import { sendSuccess } from '../utils/response';
 
 export const AuthController = {
   async register(req: Request, res: Response) {
@@ -10,18 +11,14 @@ export const AuthController = {
       const user = await AuthService.register(req.body);
       const token = signJWT(user.id);
       
-      res
-        .cookie(config.cookieName, token, {
-          httpOnly: true,
-          sameSite: 'lax',
-          secure: config.isProd,
-          maxAge: 7 * 24 * 60 * 60 * 1000
-        })
-        .json({
-          success: true,
-          data: user,
-          message: 'User registered successfully'
-        });
+      res.cookie(config.cookieName, token, {
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: config.isProd,
+        maxAge: 7 * 24 * 60 * 60 * 1000
+      });
+      
+      sendSuccess(res, user, 'User registered successfully');
     } catch (error) {
       if (error instanceof HttpError) {
         throw error;
@@ -35,18 +32,14 @@ export const AuthController = {
       const user = await AuthService.login(req.body);
       const token = signJWT(user.id);
       
-      res
-        .cookie(config.cookieName, token, {
-          httpOnly: true,
-          sameSite: 'lax',
-          secure: config.isProd,
-          maxAge: 7 * 24 * 60 * 60 * 1000
-        })
-        .json({
-          success: true,
-          data: user,
-          message: 'Login successful'
-        });
+      res.cookie(config.cookieName, token, {
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: config.isProd,
+        maxAge: 7 * 24 * 60 * 60 * 1000
+      });
+      
+      sendSuccess(res, user, 'Login successful');
     } catch (error) {
       if (error instanceof HttpError) {
         throw error;
@@ -56,19 +49,14 @@ export const AuthController = {
   },
 
   async logout(_req: Request, res: Response) {
-    res.clearCookie(config.cookieName).json({ 
-      success: true,
-      message: 'Logged out successfully'
-    });
+    res.clearCookie(config.cookieName);
+    sendSuccess(res, undefined, 'Logged out successfully');
   },
 
   async me(req: Request, res: Response) {
     try {
       const me = await AuthService.me((req as any).user.id);
-      res.json({
-        success: true,
-        data: me
-      });
+      sendSuccess(res, me);
     } catch (error) {
       if (error instanceof HttpError) {
         throw error;
@@ -80,10 +68,7 @@ export const AuthController = {
   async stats(req: Request, res: Response) {
     try {
       const stats = await AuthService.getStats((req as any).user.id);
-      res.json({
-        success: true,
-        data: stats
-      });
+      sendSuccess(res, stats);
     } catch (error) {
       if (error instanceof HttpError) {
         throw error;
@@ -99,11 +84,7 @@ export const AuthController = {
       
       invalidateUserCache(userId);
       
-      res.json({
-        success: true,
-        data: user,
-        message: 'Profile updated successfully'
-      });
+      sendSuccess(res, user, 'Profile updated successfully');
     } catch (error) {
       if (error instanceof HttpError) {
         throw error;
@@ -117,10 +98,7 @@ export const AuthController = {
       const userId = (req as any).user.id;
       await AuthService.changePassword(userId, req.body);
       
-      res.json({
-        success: true,
-        message: 'Password changed successfully'
-      });
+      sendSuccess(res, undefined, 'Password changed successfully');
     } catch (error) {
       if (error instanceof HttpError) {
         throw error;
