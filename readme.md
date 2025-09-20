@@ -47,3 +47,4 @@ Modern, full‑stack NFT marketplace skeleton for candidate assessments and rapi
 This project is used to assess frontend, backend, blockchain, and technical lead skills. See `missions.md` for role-specific missions.
 
 
+# ESLint and Husky Setup Complete

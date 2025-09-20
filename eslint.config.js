@@ -6,11 +6,14 @@ export default [
   // Ignore patterns first
   {
     ignores: [
-      'node_modules/',
-      'dist/',
-      'build/',
-      '.next/',
+      '**/node_modules/',
+      '**/dist/',
+      '**/build/',
+      '**/.next/',
       '**/*.d.ts',
+      'apps/api/dist/**',
+      'apps/web/.next/**',
+      '**/*.tsbuildinfo',
     ],
   },
   
